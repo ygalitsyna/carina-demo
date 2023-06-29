@@ -6,8 +6,6 @@
 	<parameter name="jenkinsJobType" value="web"/>
 	<parameter name="jenkinsEnvironments" value="DEMO"/>
 	<parameter name="jenkinsEmail" value="demo@zebrunner.com"/>
-
-	<parameter name="provider" value="zebrunner"/>
   
 	<parameter name="jenkinsRegressionPipeline" value="web_regression, full_regression"/>
 

@@ -1,16 +1,29 @@
 version: '3'
 services:
-  carina-demo:
+  selenoid:
+    network_mode: bridge
+    image: aerokube/selenoid:1.10.12
+    volumes:
+      - "./config:/etc/selenoid"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./config/video:/opt/selenoid/video"
+      - "./config/logs:/opt/selenoid/logs"
+    environment:
+      - OVERRIDE_VIDEO_OUTPUT_DIR=./config/video
+    command: ["-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs"]
+    ports:
+      - "4444:4444"
+  carina:
     image: openjdk:11
     container_name: carina
     environment:
-      - 'SUITE=api'
+      - 'SUITE=web'
     command: ["sh", "-c",
       "apt-get update 
       && apt-get install -y maven 
-      && cd carina-demo 
+      && cd selenium 
       && mvn test -Dsuite=$${SUITE}"]
     volumes:
-      - "./src:/carina-demo/src:ro"
-      - "./pom.xml:/carina-demo/pom.xml:ro"
-      - "./new-target:/carina-demo/target"
+      - "./src:/selenium/src:ro"
+      - "./pom.xml:/selenium/pom.xml:ro"
+      - "./new-target:/selenium/target"
